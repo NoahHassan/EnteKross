@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include "Window.h"
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -7,6 +7,13 @@ int CALLBACK WinMain(
 	int       nCmdShow
 )
 {
-	while (true);
-	return 0;
+	Window window(800, 600, L"Poopie");
+
+	while (true)
+	{
+		if (const auto ecode = Window::ProcessMessages())
+		{
+			return *ecode;
+		}
+	}
 }
