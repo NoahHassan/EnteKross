@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include <sstream>
+
 Window::WindowClass Window::WindowClass::wndClass;
 
 Window::WindowClass::WindowClass() noexcept
@@ -50,7 +52,10 @@ Window::Window(unsigned int width, unsigned int height, const wchar_t* name)
 	rt.right = rt.left + width;
 	rt.bottom = rt.top + height;
 
-	AdjustWindowRect(&rt, WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX, FALSE);
+	if (AdjustWindowRect(&rt, WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX, FALSE) == 0)
+	{
+		ENTE_WND_THROW_LAST_EXCEPTION();
+	}
 
 	hWnd = CreateWindow
 	(
@@ -66,6 +71,11 @@ Window::Window(unsigned int width, unsigned int height, const wchar_t* name)
 		WindowClass::GetInstance(),
 		this
 	);
+
+	if (hWnd == 0)
+	{
+		ENTE_WND_THROW_LAST_EXCEPTION();
+	}
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 }
@@ -141,4 +151,50 @@ std::optional<int> Window::ProcessMessages() noexcept
 	}
 
 	return {};
+}
+
+Window::Exception::Exception(int line, std::string file, HRESULT hr) noexcept
+	:
+	KrossException(line, file),
+	hr(hr)
+{}
+
+const char* Window::Exception::what() const noexcept
+{
+	std::ostringstream err;
+	err << GetType() <<
+		"\nLine: " << GetLine() <<
+		"\nFile: " << GetFile() <<
+		"\nDescription: " << GetErrorDescritpion() << std::endl;
+
+	whatBuffer = err.str();
+	return whatBuffer.c_str();
+}
+
+const char* Window::Exception::GetType() const noexcept
+{
+	return "EnteKross Window Exception";
+}
+
+std::string Window::Exception::GetErrorDescritpion() const noexcept
+{
+	return TranslateErrorCode(hr);
+}
+
+std::string Window::Exception::TranslateErrorCode(HRESULT hr) noexcept
+{
+	char* pMessageBuf;
+	if (FormatMessageA(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL, hr, 0x409,
+		reinterpret_cast<LPSTR>(&pMessageBuf), 0, NULL))
+	{
+		std::string errStr = pMessageBuf;
+		LocalFree(pMessageBuf);
+		return errStr;
+	}
+	else
+	{
+		return "Unidentified error";
+	}
 }

@@ -137,10 +137,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="KrossException.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="KrossException.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsKross.h" />
   </ItemGroup>

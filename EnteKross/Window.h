@@ -3,9 +3,24 @@
 #include <optional>
 
 #include "WindowsKross.h"
+#include "KrossException.h"
 
 class Window
 {
+private:
+	class Exception : public KrossException
+	{
+	public:
+		Exception(int line, std::string file, HRESULT hr) noexcept;
+	public:
+		const char* what() const noexcept override;
+		virtual const char* GetType() const noexcept override;
+		std::string GetErrorDescritpion() const noexcept;
+	public:
+		static std::string TranslateErrorCode(HRESULT hr) noexcept;
+	private:
+		HRESULT hr;
+	};
 private:
 	class WindowClass
 	{
@@ -38,3 +53,6 @@ private:
 	unsigned int height;
 	const wchar_t* name;
 };
+
+#define ENTE_WND_THROW_EXCEPTION(hr) throw Window::Exception(__LINE__, __FILE__, hr)
+#define ENTE_WND_THROW_LAST_EXCEPTION() throw Window::Exception(__LINE__, __FILE__, GetLastError())

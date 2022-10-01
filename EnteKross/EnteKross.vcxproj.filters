@@ -21,12 +21,18 @@
     <ClCompile Include="Window.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="KrossException.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="WindowsKross.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="KrossException.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
