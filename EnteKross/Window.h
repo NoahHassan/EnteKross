@@ -4,6 +4,7 @@
 
 #include "WindowsKross.h"
 #include "KrossException.h"
+#include "Mouse.h"
 
 class Window
 {
@@ -45,13 +46,18 @@ public:
 public:
 	static LRESULT CALLBACK HandleMsgCreate(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
-	static LRESULT CALLBACK HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
+	LRESULT CALLBACK HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static std::optional<int> ProcessMessages() noexcept;
+	void SetTitle(const std::string& title);
+public:
+	Mouse mouse;
 private:
 	HWND hWnd;
 	unsigned int width;
 	unsigned int height;
 	const wchar_t* name;
+private:
+	bool quitDialog = false;
 };
 
 #define ENTE_WND_THROW_EXCEPTION(hr) throw Window::Exception(__LINE__, __FILE__, hr)

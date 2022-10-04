@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include <sstream>
+
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
@@ -13,6 +15,7 @@ int CALLBACK WinMain(
 
 		while (true)
 		{
+			Sleep(1);
 			if (const auto ecode = Window::ProcessMessages())
 			{
 				return *ecode;

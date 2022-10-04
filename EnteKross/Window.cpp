@@ -1,6 +1,7 @@
 #include "Window.h"
 
 #include <sstream>
+#include <WinUser.h>
 
 Window::WindowClass Window::WindowClass::wndClass;
 
@@ -9,18 +10,18 @@ Window::WindowClass::WindowClass() noexcept
 	hInstance(GetModuleHandle(NULL))
 {
 	WNDCLASSEX wc;
-	wc.cbSize			= sizeof(WNDCLASSEX);
-	wc.style			= CS_OWNDC;
-	wc.lpfnWndProc		= HandleMsgCreate;
-	wc.cbClsExtra		= 0;
-	wc.cbWndExtra		= 0;
-	wc.hInstance		= GetInstance();
-	wc.hCursor			= NULL;
-	wc.hIcon			= NULL;
-	wc.hbrBackground	= NULL;
-	wc.lpszMenuName		= NULL;
-	wc.lpszClassName	= GetName();
-	wc.hIconSm			= NULL;
+	wc.cbSize = sizeof(WNDCLASSEX);
+	wc.style = CS_OWNDC;
+	wc.lpfnWndProc = HandleMsgCreate;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = GetInstance();
+	wc.hCursor = NULL;
+	wc.hIcon = NULL;
+	wc.hbrBackground = NULL;
+	wc.lpszMenuName = NULL;
+	wc.lpszClassName = GetName();
+	wc.hIconSm = NULL;
 
 	RegisterClassEx(&wc);
 }
@@ -122,6 +123,8 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		PostQuitMessage(0);
 		return 0;
 	case WM_CLOSE:
+	{
+		quitDialog = true;
 		int boxID = MessageBox(
 			NULL,
 			L"Do you want to close the application?",
@@ -132,7 +135,55 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		{
 			PostQuitMessage(0);
 		}
+		quitDialog = false;
 		return 0;
+	}
+	// Mouse input
+	case WM_MOUSEMOVE:
+	{
+		POINTS pt = MAKEPOINTS(lParam);
+		if (0 <= pt.x && pt.x < width && 0 <= pt.y && pt.y < height)
+		{
+			mouse.OnMouseMove(pt.x, pt.y);
+			if (!mouse.IsInsideWindow())
+			{
+				if (!quitDialog)
+					SetCapture(hWnd);
+				mouse.OnMouseEnter();
+			}
+		}
+		else
+		{
+			if (wParam & (MK_LBUTTON | MK_RBUTTON | MK_MBUTTON))
+			{
+				mouse.OnMouseMove(pt.x, pt.y);
+			}
+			else
+			{
+				ReleaseCapture();
+				mouse.OnMouseExit();
+			}
+		}
+		break;
+	}
+	case WM_LBUTTONDOWN:
+		mouse.OnLeftPress();
+		break;
+	case WM_LBUTTONUP:
+		mouse.OnLeftRelease();
+		break;
+	case WM_RBUTTONDOWN:
+		mouse.OnRightPress();
+		break;
+	case WM_RBUTTONUP:
+		mouse.OnRightRelease();
+		break;
+	case WM_MBUTTONDOWN:
+		mouse.OnMiddlePress();
+		break;
+	case WM_MBUTTONUP:
+		mouse.OnMiddleRelease();
+		break;
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);
@@ -151,6 +202,14 @@ std::optional<int> Window::ProcessMessages() noexcept
 	}
 
 	return {};
+}
+
+void Window::SetTitle(const std::string& title)
+{
+	if (SetWindowTextA(hWnd, title.c_str()) == 0)
+	{
+		ENTE_WND_THROW_LAST_EXCEPTION();
+	}
 }
 
 Window::Exception::Exception(int line, std::string file, HRESULT hr) noexcept
