@@ -63,6 +63,8 @@ public:
 	};
 public:
 	Mouse();
+	Mouse(const Mouse& rhs) = delete;
+	Mouse& operator=(const Mouse& rhs) = delete;
 public:
 	bool IsInsideWindow()			const noexcept;
 	std::pair<int, int> GetPos()	const noexcept;
