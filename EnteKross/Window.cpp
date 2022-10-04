@@ -185,6 +185,9 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_MBUTTONUP:
 		mouse.OnMiddleRelease();
 		break;
+	case WM_MOUSEWHEEL:
+		mouse.OnWheelDelta(GET_WHEEL_DELTA_WPARAM(wParam));
+		break;
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);

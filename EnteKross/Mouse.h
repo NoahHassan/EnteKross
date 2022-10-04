@@ -75,15 +75,18 @@ public:
 	Event Read() noexcept;
 	void Clear() noexcept;
 private:  // Accessed on the Window-Side
-	void OnMouseMove(int x, int y) noexcept;
-	void OnLeftPress() noexcept;
-	void OnRightPress() noexcept;
-	void OnMiddlePress() noexcept;
-	void OnLeftRelease()  noexcept;
-	void OnRightRelease()  noexcept;
-	void OnMiddleRelease()  noexcept;
-	void OnMouseEnter()		noexcept;
-	void OnMouseExit()    noexcept;
+	void OnMouseMove(int x, int y)	noexcept;
+	void OnLeftPress()				noexcept;
+	void OnRightPress()				noexcept;
+	void OnMiddlePress()			noexcept;
+	void OnLeftRelease()			noexcept;
+	void OnRightRelease()			noexcept;
+	void OnMiddleRelease()			noexcept;
+	void OnMouseEnter()				noexcept;
+	void OnMouseExit()				noexcept;
+	void OnWheelDown()				noexcept;
+	void OnWheelUp()				noexcept;
+	void OnWheelDelta(int delta)	noexcept;
 
 	void TrimBuffer() noexcept;
 private:

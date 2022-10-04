@@ -9,6 +9,7 @@ int CALLBACK WinMain(
 	int       nCmdShow
 )
 {
+	int wheel = 0;
 	try
 	{
 		Window window(800, 600, L"Poopie");

@@ -1,4 +1,5 @@
 #include "Mouse.h"
+#include "WindowsKross.h"
 
 Mouse::Mouse()
 {
@@ -125,6 +126,33 @@ void Mouse::OnMouseExit() noexcept
     isInsideWindow = false;
     buffer.push({ Event::Type::Leave, *this });
     TrimBuffer();
+}
+
+void Mouse::OnWheelDown() noexcept
+{
+    buffer.push({ Event::Type::WheelDown, *this });
+    TrimBuffer();
+}
+
+void Mouse::OnWheelUp() noexcept
+{
+    buffer.push({ Event::Type::WheelUp, *this });
+    TrimBuffer();
+}
+
+void Mouse::OnWheelDelta(int delta) noexcept
+{
+    wheelDelta += delta;
+    if (wheelDelta >= WHEEL_DELTA)
+    {
+        wheelDelta -= WHEEL_DELTA;
+        OnWheelDown();
+    }
+    else if (wheelDelta <= -WHEEL_DELTA)
+    {
+        wheelDelta += WHEEL_DELTA;
+        OnWheelUp();
+    }
 }
 
 void Mouse::TrimBuffer() noexcept
