@@ -125,10 +125,11 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_CLOSE:
 	{
 		quitDialog = true;
-		int boxID = MessageBox(
+		int boxID = MessageBoxEx(
 			NULL,
 			L"Do you want to close the application?",
-			NULL, MB_ICONINFORMATION | MB_YESNO
+			NULL, MB_ICONINFORMATION | MB_YESNO,
+			0x409
 		);
 
 		if (boxID == IDYES)
