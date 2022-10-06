@@ -60,8 +60,8 @@ public:
 private:
 	HWND hWnd;
 	std::unique_ptr<Graphics> pGfx;
-	unsigned int width;
-	unsigned int height;
+	int width;
+	int height;
 	const wchar_t* name;
 private:
 	bool quitDialog = false;
