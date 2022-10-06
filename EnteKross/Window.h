@@ -1,11 +1,13 @@
 #pragma once
 
 #include <optional>
+#include <memory>
 
 #include "WindowsKross.h"
 #include "KrossException.h"
 #include "Mouse.h"
 #include "Keyboard.h"
+#include "Graphics.h"
 
 class Window
 {
@@ -48,13 +50,16 @@ public:
 	static LRESULT CALLBACK HandleMsgCreate(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	LRESULT CALLBACK HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
+public:
 	static std::optional<int> ProcessMessages() noexcept;
 	void SetTitle(const std::string& title);
+	Graphics& Gfx() const noexcept;
 public:
 	Mouse mouse;
 	Keyboard keyboard;
 private:
 	HWND hWnd;
+	std::unique_ptr<Graphics> pGfx;
 	unsigned int width;
 	unsigned int height;
 	const wchar_t* name;

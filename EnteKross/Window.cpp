@@ -79,6 +79,7 @@ Window::Window(unsigned int width, unsigned int height, const wchar_t* name)
 	}
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
+	pGfx = std::make_unique<Graphics>(hWnd);
 }
 
 Window::~Window()
@@ -229,6 +230,11 @@ void Window::SetTitle(const std::string& title)
 	{
 		ENTE_WND_THROW_LAST_EXCEPTION();
 	}
+}
+
+Graphics& Window::Gfx() const noexcept
+{
+	return *pGfx;
 }
 
 Window::Exception::Exception(int line, std::string file, HRESULT hr) noexcept

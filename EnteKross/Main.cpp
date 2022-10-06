@@ -13,14 +13,18 @@ int CALLBACK WinMain(
 	try
 	{
 		Window window(800, 600, L"Poopie");
+		Graphics& gfx = window.Gfx();
 
 		while (true)
 		{
 			Sleep(1);
+
 			if (const auto ecode = Window::ProcessMessages())
 			{
 				return *ecode;
 			}
+			gfx.BeginFrame(0.0f, 0.0f, 1.0f);
+			gfx.EndFrame();
 		}
 	}
 	catch (KrossException& ex)
