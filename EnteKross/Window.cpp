@@ -9,7 +9,7 @@ Window::WindowClass::WindowClass() noexcept
 	:
 	hInstance(GetModuleHandle(NULL))
 {
-	WNDCLASSEX wc;
+	WNDCLASSEX wc = {};
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_OWNDC;
 	wc.lpfnWndProc = HandleMsgCreate;
@@ -267,7 +267,7 @@ std::string Window::Exception::GetErrorDescritpion() const noexcept
 
 std::string Window::Exception::TranslateErrorCode(HRESULT hr) noexcept
 {
-	char* pMessageBuf;
+	char* pMessageBuf = nullptr;
 	if (FormatMessageA(
 		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 		NULL, hr, 0x409,

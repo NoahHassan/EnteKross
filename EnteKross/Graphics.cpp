@@ -51,7 +51,7 @@ Graphics::Graphics(HWND hWnd)
 	pContext->OMSetRenderTargets(1u, pRenderTargetView.GetAddressOf(), nullptr);
 
 	// Configure Viewport
-	D3D11_VIEWPORT vp;
+	D3D11_VIEWPORT vp = {};
 	vp.Width = 800.0f;
 	vp.Height = 600.0f;
 	vp.MinDepth = 0.0f;
