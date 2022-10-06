@@ -188,6 +188,21 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_MOUSEWHEEL:
 		mouse.OnWheelDelta(GET_WHEEL_DELTA_WPARAM(wParam));
 		break;
+	// Keyboard input
+	case WM_SYSKEYDOWN:
+	case WM_KEYDOWN:
+		if (!(lParam & 0x40000000) || keyboard.AutoRepeatEnabled())
+		{
+			keyboard.OnKeyDown(static_cast<unsigned char>(wParam));
+		}
+		break;
+	case WM_SYSKEYUP:
+	case WM_KEYUP:
+		keyboard.OnKeyRelease(static_cast<unsigned char>(wParam));
+		break;
+	case WM_CHAR:
+		keyboard.OnChar(static_cast<unsigned char>(wParam));
+		break;
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);

@@ -5,6 +5,7 @@
 #include "WindowsKross.h"
 #include "KrossException.h"
 #include "Mouse.h"
+#include "Keyboard.h"
 
 class Window
 {
@@ -51,6 +52,7 @@ public:
 	void SetTitle(const std::string& title);
 public:
 	Mouse mouse;
+	Keyboard keyboard;
 private:
 	HWND hWnd;
 	unsigned int width;
