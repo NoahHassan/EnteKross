@@ -1,6 +1,6 @@
-#include "Window.h"
-
 #include <sstream>
+
+#include "App.h"
 
 int CALLBACK WinMain(
 	_In_	 HINSTANCE hInstance,
@@ -12,8 +12,8 @@ int CALLBACK WinMain(
 	int wheel = 0;
 	try
 	{
-		Window window(800, 600, L"Poopie");
-		Graphics& gfx = window.Gfx();
+		App app{};
+		app.Setup();
 
 		while (true)
 		{
@@ -23,8 +23,9 @@ int CALLBACK WinMain(
 			{
 				return *ecode;
 			}
-			gfx.BeginFrame(0.0f, 0.0f, 1.0f);
-			gfx.EndFrame();
+
+			app.Update(1.0f/60.0f);
+			app.Draw();
 		}
 	}
 	catch (KrossException& ex)

@@ -36,6 +36,9 @@
     <ClCompile Include="dxerr.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -60,6 +63,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="dxerr.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
