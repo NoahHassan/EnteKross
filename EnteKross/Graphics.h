@@ -8,6 +8,26 @@
 class Graphics
 {
 public:
+	class HrException : public KrossException
+	{
+	public:
+		HrException(int line, std::string file, HRESULT hr);
+	public:
+		const char* what() const noexcept override;
+		virtual const char* GetType() const noexcept override;
+		HRESULT GetErrorCode() const noexcept;
+		std::string GetErrorString() const noexcept;
+		std::string GetErrorDescription() const noexcept;
+	private:
+		HRESULT hr;
+	};
+	class DeviceRemovedException : public HrException
+	{
+		using HrException::HrException;
+	public:
+		virtual const char* GetType() const noexcept override;
+	};
+public:
 	Graphics(HWND hWnd);
 	Graphics(const Graphics&) = delete;
 	Graphics& operator =(const Graphics&) = delete;
@@ -20,3 +40,7 @@ private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>			pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	pRenderTargetView;
 };
+
+#define ENTE_GFX_CHECK_EXCEPTION(hrcall) if(FAILED(hr = (hrcall))) throw Graphics::HrException(__LINE__, __FILE__, hr)
+#define ENTE_GFX_THROW_EXCEPTION(hr) throw Graphics::HrException(__LINE__, __FILE__, hr)
+#define ENTE_GFX_THROW_DEVICE_REMOVED_EXCEPTION(hr) throw Graphics::DeviceRemovedException(__LINE__, __FILE__, hr)
