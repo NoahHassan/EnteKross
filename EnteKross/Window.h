@@ -63,7 +63,7 @@ public:
 public:
 	static std::optional<int> ProcessMessages() noexcept;
 	void SetTitle(const std::string& title);
-	Graphics& Gfx() const noexcept;
+	Graphics& Gfx() const;
 public:
 	Mouse mouse;
 	Keyboard keyboard;
@@ -76,7 +76,3 @@ private:
 private:
 	bool quitDialog = false;
 };
-
-#define ENTE_WND_THROW_EXCEPTION(hr) throw Window::HrException(__LINE__, __FILE__, hr)
-#define ENTE_WND_THROW_LAST_EXCEPTION() throw Window::HrException(__LINE__, __FILE__, GetLastError())
-#define ENTE_WND_THROW_NOGFX_EXCEPTION() throw Window::NoGfxException(__LINE__, __FILE__)

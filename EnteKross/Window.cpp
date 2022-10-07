@@ -5,6 +5,10 @@
 
 Window::WindowClass Window::WindowClass::wndClass;
 
+#define ENTE_WND_THROW_EXCEPTION(hr) throw Window::HrException(__LINE__, __FILE__, hr)
+#define ENTE_WND_THROW_LAST_EXCEPTION() throw Window::HrException(__LINE__, __FILE__, GetLastError())
+#define ENTE_WND_THROW_NOGFX_EXCEPTION() throw Window::NoGfxException(__LINE__, __FILE__)
+
 Window::WindowClass::WindowClass() noexcept
 	:
 	hInstance(GetModuleHandle(NULL))
@@ -233,7 +237,7 @@ void Window::SetTitle(const std::string& title)
 	}
 }
 
-Graphics& Window::Gfx() const noexcept
+Graphics& Window::Gfx() const
 {
 	if (!pGfx)
 	{
