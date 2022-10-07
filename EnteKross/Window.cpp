@@ -235,16 +235,20 @@ void Window::SetTitle(const std::string& title)
 
 Graphics& Window::Gfx() const noexcept
 {
+	if (!pGfx)
+	{
+		ENTE_WND_THROW_NOGFX_EXCEPTION();
+	}
 	return *pGfx;
 }
 
-Window::Exception::Exception(int line, std::string file, HRESULT hr) noexcept
+Window::HrException::HrException(int line, std::string file, HRESULT hr) noexcept
 	:
-	KrossException(line, file),
+	Exception(line, file),
 	hr(hr)
 {}
 
-const char* Window::Exception::what() const noexcept
+const char* Window::HrException::what() const noexcept
 {
 	std::ostringstream err;
 	err << GetType() <<
@@ -256,12 +260,12 @@ const char* Window::Exception::what() const noexcept
 	return whatBuffer.c_str();
 }
 
-const char* Window::Exception::GetType() const noexcept
+const char* Window::HrException::GetType() const noexcept
 {
 	return "EnteKross Window Exception";
 }
 
-std::string Window::Exception::GetErrorDescription() const noexcept
+std::string Window::HrException::GetErrorDescription() const noexcept
 {
 	return TranslateErrorCode(hr);
 }
@@ -282,4 +286,9 @@ std::string Window::Exception::TranslateErrorCode(HRESULT hr) noexcept
 	{
 		return "Unidentified error";
 	}
+}
+
+const char* Window::NoGfxException::GetType() const noexcept
+{
+	return "EnteKross Window Exception [No Graphics found]";
 }
