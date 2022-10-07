@@ -19,7 +19,7 @@ private:
 	public:
 		const char* what() const noexcept override;
 		virtual const char* GetType() const noexcept override;
-		std::string GetErrorDescritpion() const noexcept;
+		std::string GetErrorDescription() const noexcept;
 	public:
 		static std::string TranslateErrorCode(HRESULT hr) noexcept;
 	private:

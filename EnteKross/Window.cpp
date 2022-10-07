@@ -250,7 +250,7 @@ const char* Window::Exception::what() const noexcept
 	err << GetType() <<
 		"\nLine: " << GetLine() <<
 		"\nFile: " << GetFile() <<
-		"\nDescription: " << GetErrorDescritpion() << std::endl;
+		"\nDescription: " << GetErrorDescription() << std::endl;
 
 	whatBuffer = err.str();
 	return whatBuffer.c_str();
@@ -261,7 +261,7 @@ const char* Window::Exception::GetType() const noexcept
 	return "EnteKross Window Exception";
 }
 
-std::string Window::Exception::GetErrorDescritpion() const noexcept
+std::string Window::Exception::GetErrorDescription() const noexcept
 {
 	return TranslateErrorCode(hr);
 }
