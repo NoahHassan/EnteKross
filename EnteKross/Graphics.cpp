@@ -1,9 +1,12 @@
 #include <sstream>
+#include <d3dcompiler.h>
+#include <DirectXMath.h>
 
 #include "Graphics.h"
 #include "dxerr.h"
 
 #pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "d3dcompiler.lib")
 
 #define ENTE_GFX_CHECK_EXCEPTION(hrcall) if(FAILED(hr = (hrcall))) throw Graphics::HrException(__LINE__, __FILE__, hr)
 #define ENTE_GFX_THROW_EXCEPTION(hr) throw Graphics::HrException(__LINE__, __FILE__, hr)
@@ -92,6 +95,112 @@ void Graphics::EndFrame()
 			ENTE_GFX_THROW_EXCEPTION(hr);
 		}
 	}
+}
+
+void Graphics::DrawTestTriangle()
+{
+	namespace wrl = Microsoft::WRL;
+	HRESULT hr;
+
+	// Geometry
+	struct Vertex
+	{
+		struct {
+			float x;
+			float y;
+		} pos;
+		struct {
+			unsigned char r;
+			unsigned char g;
+			unsigned char b;
+			unsigned char a;
+		} col;
+	};
+	Vertex vertices[3] =
+	{
+		{0.0f, 0.5f, 255, 0, 0},
+		{0.5f, -0.5f, 0, 255, 0},
+		{-0.5f, -0.5f, 0, 0, 255}
+	};
+
+	int indices[3] =
+	{
+		0,1,2
+	};
+
+	// Vertex Bufffer
+	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
+	D3D11_BUFFER_DESC vbd = {};
+	vbd.ByteWidth = sizeof(vertices);
+	vbd.Usage = D3D11_USAGE_DEFAULT;
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.CPUAccessFlags = 0u;
+	vbd.StructureByteStride = sizeof(Vertex);
+
+	D3D11_SUBRESOURCE_DATA vsd = {};
+	vsd.pSysMem = reinterpret_cast<void*>(vertices);
+
+	ENTE_GFX_CHECK_EXCEPTION(pDevice->CreateBuffer(&vbd, &vsd, &pVertexBuffer));
+
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0u;
+	pContext->IASetVertexBuffers(0u, 1u, pVertexBuffer.GetAddressOf(), &stride, &offset);
+
+	// Index Buffer
+	wrl::ComPtr<ID3D11Buffer> pIndexBuffer;
+	D3D11_BUFFER_DESC ibd = {};
+	ibd.ByteWidth = sizeof(indices);
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0u;
+	ibd.StructureByteStride = sizeof(int);
+	ibd.Usage = D3D11_USAGE_DEFAULT;
+
+	D3D11_SUBRESOURCE_DATA isd = {};
+	isd.pSysMem = reinterpret_cast<void*>(indices);
+
+	ENTE_GFX_CHECK_EXCEPTION(pDevice->CreateBuffer(&ibd, &isd, &pIndexBuffer));
+
+	pContext->IASetIndexBuffer(pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0u);
+
+	// Set Primitive Topology
+	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// Shaders
+	wrl::ComPtr<ID3D11PixelShader> pPixelShader;
+	wrl::ComPtr<ID3D11VertexShader> pVertexShader;
+	wrl::ComPtr<ID3DBlob> pBlob;
+	ENTE_GFX_CHECK_EXCEPTION(D3DReadFileToBlob(L"PixelShader.cso", &pBlob));
+	ENTE_GFX_CHECK_EXCEPTION(pDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader));
+	ENTE_GFX_CHECK_EXCEPTION(D3DReadFileToBlob(L"VertexShader.cso", &pBlob));
+	ENTE_GFX_CHECK_EXCEPTION(pDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader));
+
+	pContext->PSSetShader(pPixelShader.Get(), nullptr, 0u);
+	pContext->VSSetShader(pVertexShader.Get(), nullptr, 0u);
+
+	// Input Layout
+	wrl::ComPtr<ID3D11InputLayout> pInputLayout;
+	D3D11_INPUT_ELEMENT_DESC ied[] =
+	{
+		{"Position", 0u, DXGI_FORMAT_R32G32_FLOAT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
+		{"Color", 0u, DXGI_FORMAT_R8G8B8A8_UNORM, 0u, 8u, D3D11_INPUT_PER_VERTEX_DATA, 0u}
+	};
+	pDevice->CreateInputLayout(ied, (UINT)std::size(ied), pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &pInputLayout);
+	pContext->IASetInputLayout(pInputLayout.Get());
+
+	// Set Render Targets
+	pContext->OMSetRenderTargets(1u, pRenderTargetView.GetAddressOf(), nullptr);
+
+	// Configure Viewport
+	D3D11_VIEWPORT vp = {};
+	vp.Width = 800;
+	vp.Height = 600;
+	vp.MinDepth = 0;
+	vp.MaxDepth = 1;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	pContext->RSSetViewports(1u, &vp);
+
+	pContext->Draw(std::size(vertices), 0u);
 }
 
 Graphics::HrException::HrException(int line, std::string file, HRESULT hr)

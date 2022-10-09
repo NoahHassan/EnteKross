@@ -34,6 +34,7 @@ public:
 public:
 	void BeginFrame(float r, float g, float b);
 	void EndFrame();
+	void DrawTestTriangle();
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device>			pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>		pContext;
