@@ -17,7 +17,7 @@ private:
 	Graphics& gfx;
 private:
 	// USER VARIABLES //
-	float t = 0.0f;
 	float c = 0.0f;
+	float t = 0.0f;
 	// USER VARIABLES //
 };

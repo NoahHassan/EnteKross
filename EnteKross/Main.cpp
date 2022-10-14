@@ -9,7 +9,6 @@ int CALLBACK WinMain(
     _In_	 int nCmndShow
 )
 {
-	int wheel = 0;
 	try
 	{
 		App app{};

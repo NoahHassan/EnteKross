@@ -21,6 +21,6 @@ void App::Update(float dt)
 void App::Draw()
 {
 	gfx.BeginFrame(c, c, 1.0f);
-	gfx.DrawTestTriangle();
+	gfx.DrawTestCube(t);
 	gfx.EndFrame();
 }
