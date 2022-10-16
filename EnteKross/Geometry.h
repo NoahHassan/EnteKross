@@ -15,6 +15,19 @@ public:
 		assert(indices.size() % 3 == 0 && "Index count must be a multiple of 3");
 	}
 public:
+	void Tessellate(int subdivisions) noexcept
+	{
+
+	}
+	void ApplyScale(float scale) noexcept
+	{
+		for (DirectX::XMFLOAT3& v : vertices)
+		{
+			DirectX::XMVECTOR v4 = DirectX::XMLoadFloat3(&v);
+			DirectX::XMStoreFloat3(&v, DirectX::XMVectorScale(v4, scale));
+		}
+	}
+public:
 	static Geometry MakeCube() noexcept
 	{
 		return

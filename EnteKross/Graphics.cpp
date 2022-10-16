@@ -202,7 +202,7 @@ void Graphics::DrawAt(float x, float y, float z)
 	DirectX::XMMATRIX transform = DirectX::XMMatrixTranspose
 	(
 		DirectX::XMMatrixTranslation(x, y, z) *
-		DirectX::XMMatrixPerspectiveRH(1.0f, (3.0f / 4.0f), 0.5f, 10.0f)
+		DirectX::XMMatrixPerspectiveRH(1.0f, (3.0f / 4.0f), 0.5f, 1000.0f)
 	);
 
 	D3D11_MAPPED_SUBRESOURCE msr;
