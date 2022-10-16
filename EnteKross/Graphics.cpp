@@ -98,61 +98,32 @@ void Graphics::BindPrimitive(Geometry geometry)
 	HRESULT hr;
 
 	primitiveIndexCount = (UINT)std::size(geometry.indices);
+	std::vector<dx::XMFLOAT3> vertices = geometry.vertices;
+	std::vector<unsigned short> indices = geometry.indices;
 
 	// Create Vertex Buffer
-	struct Vertex
-	{
-		struct {
-			float x;
-			float y;
-			float z;
-		} pos;
-	};
-
-	const Vertex vertices[8] =
-	{
-		{-1.0f, 1.0f,-1.0f},	// 0
-		{ 1.0f, 1.0f,-1.0f},	// 1
-		{ 1.0f,-1.0f,-1.0f},	// 2
-		{-1.0f,-1.0f,-1.0f},	// 3
-		{-1.0f, 1.0f, 1.0f},	// 4
-		{ 1.0f, 1.0f, 1.0f},	// 5
-		{ 1.0f,-1.0f, 1.0f},	// 6
-		{-1.0f,-1.0f, 1.0f}		// 7
-	};
-
 	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
 	D3D11_BUFFER_DESC bd = {};
-	bd.ByteWidth = sizeof(vertices);
+	bd.ByteWidth = std::size(geometry.vertices) * sizeof(dx::XMFLOAT3);
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
-	bd.StructureByteStride = sizeof(Vertex);
+	bd.StructureByteStride = sizeof(dx::XMFLOAT3);
 
 	D3D11_SUBRESOURCE_DATA sd = {};
-	sd.pSysMem = vertices;
+	sd.pSysMem = vertices.data();
 
 	ENTE_GFX_CHECK_EXCEPTION(pDevice->CreateBuffer(&bd, &sd, &pVertexBuffer));
 
 	// Bind Vertex Buffer
-	const UINT stride = sizeof(Vertex);
+	const UINT stride = sizeof(dx::XMFLOAT3);
 	const UINT offset = 0u;
 	pContext->IASetVertexBuffers(0u, 1u, pVertexBuffer.GetAddressOf(), &stride, &offset);
 
 	// Create Index Buffer
-	const unsigned short indices[] =
-	{
-		0,2,1, 0,3,2, // Front
-		1,6,5, 1,2,6, // Right
-		5,7,4, 5,6,7, // Back
-		4,3,0, 4,7,3, // Left
-		4,1,5, 4,0,1, // Top
-		3,6,2, 3,7,6  // Bottom
-	};
-
 	D3D11_BUFFER_DESC ibd = {};
-	ibd.ByteWidth = sizeof(indices);
+	ibd.ByteWidth = sizeof(unsigned short) * std::size(geometry.indices);
 	ibd.Usage = D3D11_USAGE_DEFAULT;
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	ibd.CPUAccessFlags = 0u;
@@ -160,7 +131,7 @@ void Graphics::BindPrimitive(Geometry geometry)
 	ibd.StructureByteStride = sizeof(unsigned short);
 
 	D3D11_SUBRESOURCE_DATA isd = {};
-	isd.pSysMem = indices;
+	isd.pSysMem = geometry.indices.data();
 
 	ENTE_GFX_CHECK_EXCEPTION(pDevice->CreateBuffer(&ibd, &isd, &pIndexBuffer));
 

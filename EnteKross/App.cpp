@@ -12,7 +12,7 @@ App::App()
 
 void App::Setup()
 {
-	gfx.BindPrimitive(Geometry::MakeCube());
+	gfx.BindPrimitive(Geometry::MakeIcosphere());
 	particles.emplace_back(0.0f, 0.0f, -4.0f);
 	particles.emplace_back(0.0f, 2.0f, 1.0f);
 	particles.emplace_back(1.0f, -3.0f, -6.0f);
