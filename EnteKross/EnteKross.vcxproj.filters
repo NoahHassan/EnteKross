@@ -80,6 +80,9 @@
     <ClInclude Include="Particle.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Vec3.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">

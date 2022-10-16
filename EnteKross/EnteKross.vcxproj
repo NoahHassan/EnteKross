@@ -157,6 +157,7 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Vec3.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsKross.h" />
   </ItemGroup>
