@@ -42,6 +42,9 @@
     <ClCompile Include="App.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -71,6 +74,12 @@
     <ClInclude Include="App.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -88,6 +97,12 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="SolidVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="SolidPS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

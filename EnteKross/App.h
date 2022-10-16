@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Window.h"
+#include "Particle.h"
+#include <vector>
 
 class App
 {
@@ -19,5 +21,6 @@ private:
 	// USER VARIABLES //
 	float c = 0.0f;
 	float t = 0.0f;
+	std::vector<Particle> particles;
 	// USER VARIABLES //
 };
