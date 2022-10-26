@@ -140,6 +140,13 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="imgui_demo.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_impl_dx11.cpp" />
+    <ClCompile Include="imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui_tables.cpp" />
+    <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="KrossException.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -152,6 +159,15 @@
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="imconfig.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="ImGuiManager.h" />
+    <ClInclude Include="imgui_impl_dx11.h" />
+    <ClInclude Include="imgui_impl_win32.h" />
+    <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="imstb_rectpack.h" />
+    <ClInclude Include="imstb_textedit.h" />
+    <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="KrossException.h" />
     <ClInclude Include="Mouse.h" />
@@ -164,6 +180,7 @@
     <None Include="DXGetErrorDescription.inl" />
     <None Include="DXGetErrorString.inl" />
     <None Include="DXTrace.inl" />
+    <None Include="imgui.ini" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
