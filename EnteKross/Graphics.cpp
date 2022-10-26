@@ -6,6 +6,9 @@
 #include "dxerr.h"
 #include "Geometry.h"
 
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
+
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -88,6 +91,15 @@ Graphics::Graphics(HWND hWnd)
 	cbd.StructureByteStride = 0u;
 
 	ENTE_GFX_CHECK_EXCEPTION(pDevice->CreateBuffer(&cbd, nullptr, &pPositionBuffer));
+
+	// Init ImGui
+	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
+}
+
+Graphics::~Graphics()
+{
+	ImGui::DestroyContext();
+	ImGui_ImplDX11_Shutdown();
 }
 
 void Graphics::BindPrimitive(Geometry geometry)
@@ -175,6 +187,13 @@ void Graphics::BindPrimitive(Geometry geometry)
 
 void Graphics::BeginFrame(float r, float g, float b)
 {
+	if (imGuiEnabled)
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
+
 	const float color[4] = { r,g,b,1.0f };
 	pContext->OMSetRenderTargets(1u, pRenderTargetView.GetAddressOf(), nullptr);
 	pContext->ClearRenderTargetView(pRenderTargetView.Get(), color);
@@ -182,6 +201,12 @@ void Graphics::BeginFrame(float r, float g, float b)
 
 void Graphics::EndFrame()
 {
+	if (imGuiEnabled)
+	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	}
+
 	HRESULT hr;
 	if (FAILED(hr = pSwapChain->Present(1u, 0u)))
 	{
@@ -383,6 +408,21 @@ void Graphics::DrawTestCube(float t)
 	pContext->RSSetViewports(1u, &vp);
 
 	pContext->DrawIndexed((UINT)std::size(indices), 0u, 0u);
+}
+
+void Graphics::EnableImGui() noexcept
+{
+	imGuiEnabled = true;
+}
+
+void Graphics::DisableImGui() noexcept
+{
+	imGuiEnabled = false;
+}
+
+bool Graphics::IsImGuiEnabled() const noexcept
+{
+	return imGuiEnabled;
 }
 
 Graphics::HrException::HrException(int line, std::string file, HRESULT hr)

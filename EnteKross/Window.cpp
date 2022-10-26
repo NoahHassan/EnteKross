@@ -3,6 +3,10 @@
 #include <sstream>
 #include <WinUser.h>
 
+#include "imgui_impl_win32.h"
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 Window::WindowClass Window::WindowClass::wndClass;
 
 #define ENTE_WND_THROW_EXCEPTION(hr) throw Window::HrException(__LINE__, __FILE__, hr)
@@ -84,10 +88,17 @@ Window::Window(unsigned int width, unsigned int height, const wchar_t* name)
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 	pGfx = std::make_unique<Graphics>(hWnd);
+
+	// Init ImGui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui::StyleColorsDark();
+	ImGui_ImplWin32_Init(hWnd);
 }
 
 Window::~Window()
 {
+	ImGui_ImplWin32_Shutdown();
 	DestroyWindow(hWnd);
 }
 
@@ -122,6 +133,13 @@ LRESULT Window::HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+	{
+		return true;
+	}
+
+	const ImGuiIO& io = ImGui::GetIO();
+
 	switch (msg)
 	{
 	case WM_DESTROY:
@@ -148,6 +166,9 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	// Mouse input
 	case WM_MOUSEMOVE:
 	{
+		if (io.WantCaptureMouse)
+			break;
+
 		POINTS pt = MAKEPOINTS(lParam);
 		if (0 <= pt.x && pt.x < width && 0 <= pt.y && pt.y < height)
 		{
@@ -174,39 +195,71 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		break;
 	}
 	case WM_LBUTTONDOWN:
+		if (io.WantCaptureMouse)
+			break;
+
 		mouse.OnLeftPress();
 		break;
 	case WM_LBUTTONUP:
+		if (io.WantCaptureMouse)
+			break;
+
 		mouse.OnLeftRelease();
 		break;
 	case WM_RBUTTONDOWN:
+		if (io.WantCaptureMouse)
+			break;
+
 		mouse.OnRightPress();
 		break;
 	case WM_RBUTTONUP:
+		if (io.WantCaptureMouse)
+			break;
+
 		mouse.OnRightRelease();
 		break;
 	case WM_MBUTTONDOWN:
+		if (io.WantCaptureMouse)
+			break;
+
 		mouse.OnMiddlePress();
 		break;
 	case WM_MBUTTONUP:
+		if (io.WantCaptureMouse)
+			break;
+
 		mouse.OnMiddleRelease();
 		break;
 	case WM_MOUSEWHEEL:
+		if (io.WantCaptureMouse)
+			break;
+
 		mouse.OnWheelDelta(GET_WHEEL_DELTA_WPARAM(wParam));
 		break;
 	// Keyboard input
 	case WM_SYSKEYDOWN:
 	case WM_KEYDOWN:
+	{
+		if (io.WantCaptureKeyboard)
+			break;
+
 		if (!(lParam & 0x40000000) || keyboard.AutoRepeatEnabled())
 		{
 			keyboard.OnKeyDown(static_cast<unsigned char>(wParam));
 		}
 		break;
+	}
 	case WM_SYSKEYUP:
 	case WM_KEYUP:
+		if (io.WantCaptureKeyboard)
+			break;
+
 		keyboard.OnKeyRelease(static_cast<unsigned char>(wParam));
 		break;
 	case WM_CHAR:
+		if (io.WantCaptureKeyboard)
+			break;
+
 		keyboard.OnChar(static_cast<unsigned char>(wParam));
 		break;
 	}

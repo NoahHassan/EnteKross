@@ -31,6 +31,7 @@ public:
 	Graphics(HWND hWnd);
 	Graphics(const Graphics&) = delete;
 	Graphics& operator =(const Graphics&) = delete;
+	~Graphics();
 public:
 	// Statically bind primitive object to pipeline
 	// that is going to be used throughout the simulation
@@ -40,6 +41,10 @@ public:
 	void EndFrame();
 	void DrawAt(float x, float y, float z);
 	void DrawTestCube(float dt);
+public:
+	void EnableImGui() noexcept;
+	void DisableImGui() noexcept;
+	bool IsImGuiEnabled() const noexcept;
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device>			pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>		pContext;
@@ -50,4 +55,5 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			pPositionBuffer;
 
 	UINT primitiveIndexCount = 0u;
+	bool imGuiEnabled = true;
 };

@@ -1,8 +1,10 @@
 #include "App.h"
 #include "Particle.h"
 #include "Geometry.h"
+#include "imgui.h"
 
 #include <cmath>
+
 
 App::App()
 	:
@@ -12,8 +14,8 @@ App::App()
 
 void App::Setup()
 {
-	Geometry g = Geometry::MakeIcosphere();
-	g.ApplyScale(0.1f);
+	Geometry g = Geometry::MakeCube();
+	g.ApplyScale(0.5f);
 
 	gfx.BindPrimitive(g);
 	particles.emplace_back(0.0f, 0.0f, -4.0f);
@@ -24,7 +26,6 @@ void App::Setup()
 void App::Update(float dt)
 {
 	t += dt;
-	c = (1.0f + std::sin(t)) / 2.0f;
 	for (auto& p : particles)
 	{
 		p.z -= dt;
@@ -34,9 +35,21 @@ void App::Update(float dt)
 void App::Draw()
 {
 	gfx.BeginFrame(c, c, 1.0f);
+
+	// DRAW CODE HERE //
+
+	if (ImGui::Begin("Chicken Tikka"))
+	{
+		ImGui::SliderFloat("Background", &c, 0.0f, 1.0f, "%.2f");
+	}
+	ImGui::End();
+
 	for (auto& p : particles)
 	{
 		p.Draw(gfx);
 	}
+
+	// DRAW CODE HERE //
+
 	gfx.EndFrame();
 }

@@ -2,6 +2,8 @@
 
 #include "Window.h"
 #include "Particle.h"
+#include "ImGuiManager.h"
+
 #include <vector>
 
 class App
@@ -15,6 +17,7 @@ public:
 	void Update(float dt);
 	void Draw();
 private:
+	ImGuiManager imGuiManager;
 	Window wnd;
 	Graphics& gfx;
 private:
