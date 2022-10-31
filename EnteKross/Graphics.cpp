@@ -5,16 +5,13 @@
 #include "Graphics.h"
 #include "dxerr.h"
 #include "Geometry.h"
+#include "GraphicsThrowMacros.h"
 
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
-
-#define ENTE_GFX_CHECK_EXCEPTION(hrcall) if(FAILED(hr = (hrcall))) throw Graphics::HrException(__LINE__, __FILE__, hr)
-#define ENTE_GFX_THROW_EXCEPTION(hr) throw Graphics::HrException(__LINE__, __FILE__, hr)
-#define ENTE_GFX_THROW_DEVICE_REMOVED_EXCEPTION(hr) throw Graphics::DeviceRemovedException(__LINE__, __FILE__, hr)
 
 Graphics::Graphics(HWND hWnd)
 {
@@ -116,7 +113,7 @@ void Graphics::BindPrimitive(Geometry geometry)
 	// Create Vertex Buffer
 	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
 	D3D11_BUFFER_DESC bd = {};
-	bd.ByteWidth = std::size(geometry.vertices) * sizeof(dx::XMFLOAT3);
+	bd.ByteWidth = (UINT)std::size(geometry.vertices) * sizeof(dx::XMFLOAT3);
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
@@ -135,7 +132,7 @@ void Graphics::BindPrimitive(Geometry geometry)
 
 	// Create Index Buffer
 	D3D11_BUFFER_DESC ibd = {};
-	ibd.ByteWidth = sizeof(unsigned short) * std::size(geometry.indices);
+	ibd.ByteWidth = sizeof(unsigned short) * (UINT)std::size(geometry.indices);
 	ibd.Usage = D3D11_USAGE_DEFAULT;
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	ibd.CPUAccessFlags = 0u;
