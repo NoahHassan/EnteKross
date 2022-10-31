@@ -19,6 +19,9 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{45f637be-795e-426f-aa20-b62ad3e85bc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bindables">
+      <UniqueIdentifier>{f6cb814e-5165-4dea-a935-d4bbcd332d28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -131,14 +134,29 @@
     <ClInclude Include="ImGuiManager.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Bindable.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexBuffer.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsThrowMacros.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable.h">
+      <Filter>Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLayout.h">
+      <Filter>Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Topology.h">
+      <Filter>Bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

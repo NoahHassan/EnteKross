@@ -170,12 +170,17 @@
     <ClInclude Include="imstb_rectpack.h" />
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
+    <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="InputLayout.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="KrossException.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Topology.h" />
     <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsKross.h" />
   </ItemGroup>
