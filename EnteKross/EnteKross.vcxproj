@@ -138,6 +138,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -152,11 +154,16 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="TransformCBuf.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Bindable.h" />
+    <ClInclude Include="BindableBase.h" />
+    <ClInclude Include="ConstantBuffers.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="Drawable.h" />
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Geometry.h" />
@@ -179,6 +186,7 @@
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Topology.h" />
+    <ClInclude Include="TransformCBuf.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />

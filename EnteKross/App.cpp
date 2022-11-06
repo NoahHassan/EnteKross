@@ -16,19 +16,18 @@ void App::Setup()
 {
 	Geometry g = Geometry::MakeCube();
 	g.ApplyScale(0.5f);
-
-	gfx.BindPrimitive(g);
-	particles.emplace_back(0.0f, 0.0f, -4.0f);
-	particles.emplace_back(0.0f, 2.0f, 1.0f);
-	particles.emplace_back(1.0f, -3.0f, -6.0f);
+	
+	cubes.emplace_back(std::make_unique<Cube>(gfx, 0.0f, 0.0f, -4.0f));
+	cubes.emplace_back(std::make_unique<Cube>(gfx, 0.0f, 2.0f, 1.0f));
+	cubes.emplace_back(std::make_unique<Cube>(gfx, 1.0f, -3.0f, -6.0f));
 }
 
 void App::Update(float dt)
 {
 	t += dt;
-	for (auto& p : particles)
+	for (auto& p : cubes)
 	{
-		p.z -= dt;
+		p->position.posZ -= dt;
 	}
 }
 
@@ -44,9 +43,9 @@ void App::Draw()
 	}
 	ImGui::End();
 
-	for (auto& p : particles)
+	for (auto& p : cubes)
 	{
-		p.Draw(gfx);
+		p->Draw(gfx);
 	}
 
 	// DRAW CODE HERE //

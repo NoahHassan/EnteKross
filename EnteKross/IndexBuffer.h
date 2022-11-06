@@ -10,6 +10,9 @@ class IndexBuffer : public Bindable
 public:
 	IndexBuffer(Graphics& gfx, std::vector<unsigned short>& indices)
 	{
+		assert(std::size(indices) >= 3 && "Bad index count");
+		indexCount = (UINT)std::size(indices);
+
 		HRESULT hr;
 
 		D3D11_BUFFER_DESC ibd = {};
@@ -30,6 +33,11 @@ public:
 	{
 		GetContext(gfx)->IASetIndexBuffer(pIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
 	}
+	UINT GetCount() const noexcept
+	{
+		return indexCount;
+	}
 private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> pIndexBuffer;
+	UINT indexCount;
 };

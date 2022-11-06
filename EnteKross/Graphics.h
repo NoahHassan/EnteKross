@@ -3,6 +3,7 @@
 #include "WindowsKross.h"
 #include "KrossException.h"
 #include <d3d11.h>
+#include <DirectXMath.h>
 #include <wrl.h>
 
 class Graphics
@@ -42,6 +43,8 @@ public:
 	void EndFrame();
 	void DrawAt(float x, float y, float z);
 	void DrawTestCube(float dt);
+	void DrawIndexed(UINT count) const noexcept;
+	DirectX::XMMATRIX GetProjectionXM() const noexcept;
 public:
 	void EnableImGui() noexcept;
 	void DisableImGui() noexcept;

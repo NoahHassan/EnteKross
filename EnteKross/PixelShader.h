@@ -9,7 +9,7 @@
 class PixelShader : public Bindable
 {
 public:
-	PixelShader(Graphics& gfx, wchar_t* fileName)
+	PixelShader(Graphics& gfx, const wchar_t* fileName)
 	{
 		HRESULT hr;
 

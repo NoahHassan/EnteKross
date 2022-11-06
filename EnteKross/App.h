@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Window.h"
-#include "Particle.h"
+#include "Cube.h"
 #include "ImGuiManager.h"
 
 #include <vector>
@@ -24,6 +24,6 @@ private:
 	// USER VARIABLES //
 	float c = 0.0f;
 	float t = 0.0f;
-	std::vector<Particle> particles;
+	std::vector<std::unique_ptr<Cube>> cubes;
 	// USER VARIABLES //
 };

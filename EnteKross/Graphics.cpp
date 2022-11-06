@@ -407,6 +407,16 @@ void Graphics::DrawTestCube(float t)
 	pContext->DrawIndexed((UINT)std::size(indices), 0u, 0u);
 }
 
+void Graphics::DrawIndexed(UINT count) const noexcept
+{
+	pContext->DrawIndexed(count, 0u, 0u);
+}
+
+DirectX::XMMATRIX Graphics::GetProjectionXM() const noexcept
+{
+	return DirectX::XMMatrixPerspectiveRH(1.0f, (3.0f / 4.0f), 0.5f, 1000.0f);
+}
+
 void Graphics::EnableImGui() noexcept
 {
 	imGuiEnabled = true;

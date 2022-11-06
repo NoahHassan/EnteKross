@@ -9,7 +9,7 @@
 class VertexShader : public Bindable
 {
 public:
-	VertexShader(Graphics& gfx, wchar_t* fileName)
+	VertexShader(Graphics& gfx, const wchar_t* fileName)
 	{
 		HRESULT hr;
 
