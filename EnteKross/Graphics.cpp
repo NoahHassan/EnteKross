@@ -95,7 +95,6 @@ Graphics::Graphics(HWND hWnd)
 
 Graphics::~Graphics()
 {
-	ImGui::DestroyContext();
 	ImGui_ImplDX11_Shutdown();
 }
 
