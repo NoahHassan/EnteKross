@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "Cube.h"
+#include "Boundary.h"
 #include "ImGuiManager.h"
 
 #include <vector>
@@ -24,6 +25,7 @@ private:
 	// USER VARIABLES //
 	float c = 0.0f;
 	float t = 0.0f;
+	std::unique_ptr<Boundary> pBoundary;
 	std::vector<std::unique_ptr<Cube>> cubes;
 	// USER VARIABLES //
 };

@@ -14,9 +14,7 @@ App::App()
 
 void App::Setup()
 {
-	Geometry g = Geometry::MakeCube();
-	g.ApplyScale(0.5f);
-	
+	pBoundary = std::make_unique<Boundary>(gfx, 2.0f, 0.0f, -5.0f);
 	cubes.emplace_back(std::make_unique<Cube>(gfx, 0.0f, 0.0f, -4.0f));
 	cubes.emplace_back(std::make_unique<Cube>(gfx, 0.0f, 2.0f, 1.0f));
 	cubes.emplace_back(std::make_unique<Cube>(gfx, 1.0f, -3.0f, -6.0f));
@@ -47,6 +45,7 @@ void App::Draw()
 	{
 		p->Draw(gfx);
 	}
+	pBoundary->Draw(gfx);
 
 	// DRAW CODE HERE //
 

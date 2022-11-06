@@ -28,6 +28,30 @@ public:
 		}
 	}
 public:
+	static Geometry MakeCubeWire() noexcept
+	{
+		return
+		{
+			{ // Vertices
+				{-1.0f, 1.0f,-1.0f},	// 0
+				{ 1.0f, 1.0f,-1.0f},	// 1
+				{ 1.0f,-1.0f,-1.0f},	// 2
+				{-1.0f,-1.0f,-1.0f},	// 3
+				{-1.0f, 1.0f, 1.0f},	// 4
+				{ 1.0f, 1.0f, 1.0f},	// 5
+				{ 1.0f,-1.0f, 1.0f},	// 6
+				{-1.0f,-1.0f, 1.0f}		// 7
+			},
+			{ // Indices
+				0,1, 1,2, 2,3, 3,0,			// Front
+				1,5, 5,6, 6,2, 2,1,			// Right
+				5,6, 6,7, 7,4, 4,5,			// Back
+				4,7, 7,3, 3,0, 0,4,			// Left
+				4,0, 0,1, 1,5, 5,4,			// Top
+				3,2, 2,6, 6,7, 7,3			// Bottom
+			}
+		};
+	}
 	static Geometry MakeCube() noexcept
 	{
 		return

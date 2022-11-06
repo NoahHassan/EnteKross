@@ -25,6 +25,9 @@
     <Filter Include="Drawables">
       <UniqueIdentifier>{3d884998-94e8-4318-a062-683be0c38776}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Drawables\Source">
+      <UniqueIdentifier>{42408bc5-2d29-40dd-8c78-59bc126a21db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -75,14 +78,17 @@
     <ClCompile Include="imgui_widgets.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Drawable.cpp">
-      <Filter>Drawables</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="TransformCBuf.cpp">
       <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Drawables\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>Drawables\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Boundary.cpp">
+      <Filter>Drawables\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="TransformCBuf.h">
       <Filter>Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Boundary.h">
+      <Filter>Drawables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
