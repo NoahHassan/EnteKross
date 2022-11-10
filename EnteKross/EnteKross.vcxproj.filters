@@ -54,9 +54,6 @@
     <ClCompile Include="App.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="imgui.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
@@ -120,9 +117,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Geometry.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Particle.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="imconfig.h">

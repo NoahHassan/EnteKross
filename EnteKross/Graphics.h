@@ -35,14 +35,8 @@ public:
 	Graphics& operator =(const Graphics&) = delete;
 	~Graphics();
 public:
-	// Statically bind primitive object to pipeline
-	// that is going to be used throughout the simulation
-	void BindPrimitive(class Geometry geometry);
-public:
-	void BeginFrame(float r, float g, float b);
+	void BeginFrame(float r, float g, float b) noexcept;
 	void EndFrame();
-	void DrawAt(float x, float y, float z);
-	void DrawTestCube(float dt);
 	void DrawIndexed(UINT count) const noexcept;
 	DirectX::XMMATRIX GetProjectionXM() const noexcept;
 public:
@@ -55,9 +49,5 @@ private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>			pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	pRenderTargetView;
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer>			pIndexBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer>			pPositionBuffer;
-
-	UINT primitiveIndexCount = 0u;
 	bool imGuiEnabled = true;
 };
