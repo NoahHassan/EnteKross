@@ -14,7 +14,7 @@ void TransformCBuf::Bind(Graphics& gfx) const
 	Transform tf =
 	{
 		DirectX::XMMatrixTranspose(
-			modelTransform * gfx.GetProjectionXM()
+			modelTransform * gfx.GetCameraXM() * gfx.GetProjectionXM()
 		)
 	};
 

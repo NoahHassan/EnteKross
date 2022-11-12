@@ -124,6 +124,16 @@ void Graphics::DrawIndexed(UINT count) const noexcept
 	pContext->DrawIndexed(count, 0u, 0u);
 }
 
+void Graphics::SetCameraXM(DirectX::XMMATRIX mat) noexcept
+{
+	cameraMat = mat;
+}
+
+DirectX::XMMATRIX Graphics::GetCameraXM() const noexcept
+{
+	return cameraMat;
+}
+
 DirectX::XMMATRIX Graphics::GetProjectionXM() const noexcept
 {
 	return DirectX::XMMatrixPerspectiveRH(1.0f, (3.0f / 4.0f), 0.5f, 1000.0f);

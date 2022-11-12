@@ -188,6 +188,9 @@
     <ClInclude Include="Boundary.h">
       <Filter>Drawables</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">

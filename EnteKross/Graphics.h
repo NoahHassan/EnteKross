@@ -38,6 +38,8 @@ public:
 	void BeginFrame(float r, float g, float b) noexcept;
 	void EndFrame();
 	void DrawIndexed(UINT count) const noexcept;
+	void SetCameraXM(DirectX::XMMATRIX mat) noexcept;
+	DirectX::XMMATRIX GetCameraXM() const noexcept;
 	DirectX::XMMATRIX GetProjectionXM() const noexcept;
 public:
 	void EnableImGui() noexcept;
@@ -49,5 +51,6 @@ private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>			pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	pRenderTargetView;
 
+	DirectX::XMMATRIX cameraMat;
 	bool imGuiEnabled = true;
 };
