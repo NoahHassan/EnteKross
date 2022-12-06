@@ -52,7 +52,8 @@ void Cube::SetScale(float sx, float sy, float sz) noexcept
 	scale = { sx, sy, sz };
 }
 
-void Cube::SetColor(float r, float g, float b) noexcept
+void Cube::SetColor(Graphics& gfx, float r, float g, float b)
 {
 	color = { r,g,b,1.0f };
+	QueryBindable<PixelConstantBuffer<RGBColor>>()->Update(gfx, color);
 }

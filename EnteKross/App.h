@@ -21,6 +21,8 @@ public:
 	void Update(float dt);
 	void Draw();
 private:
+	void InitializeSimulation();
+private:
 	ImGuiManager imGuiManager;
 	Window wnd;
 	Graphics& gfx;
@@ -30,20 +32,20 @@ private:
 	float camSpeed = 1.0f;
 	float theta = PI / 2.0f;
 	float phi = 0.0f;
-	float r	= 5.0f;
+	float r	= 10.0f;
 	float theta_max = PI - 0.01f;
 	float theta_min = 0.01f;
 	// CAMERA //
 
 	// SIMULATION SETTINGS //
-	const int nMatches = 20;
-	const float boxX = 2.0f;
-	const float boxY = 1.6f;
-	const float boxZ = 2.4f;
-	const float v = 1.0f;
-	const float filling = 1.1f;
+	int nMatches = 50;
+	float matchRadius = 1.0f;
+	float matchVelocity = 1.6f;
+	float matchVolume = 0.00f;
+	float filling = 1.1f;
 
 	float timeStep = 1.0f / 60.0f;
+	float simulationSpeed = 20.0f;
 	// SIMULATION SETTINGS //
 
 	// RUNTIME VARIABLES //

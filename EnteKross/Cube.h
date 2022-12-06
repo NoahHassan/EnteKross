@@ -11,7 +11,7 @@ public:
 public:
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void SetScale(float sx, float sy, float sz) noexcept;
-	void SetColor(float r, float g, float b) noexcept;
+	void SetColor(Graphics& gfx, float r, float g, float b);
 private:
 	struct RGBColor
 	{

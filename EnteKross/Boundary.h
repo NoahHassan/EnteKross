@@ -22,12 +22,6 @@ private:
 	};
 private:
 	RGBColor color = { 1.0f,1.0f,1.0f,1.0f };
-	struct
-	{
-		float x = 1.0f;
-		float y = 1.0f;
-		float z = 1.0f;
-	} scale;
 public:
 	struct
 	{
@@ -35,4 +29,10 @@ public:
 		float y = 0.0f;
 		float z = 0.0f;
 	} position;
+	struct
+	{
+		float x = 1.0f;
+		float y = 1.0f;
+		float z = 1.0f;
+	} scale;
 };
