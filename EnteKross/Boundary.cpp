@@ -8,6 +8,7 @@ Boundary::Boundary(Graphics& gfx, float x, float y, float z)
 	position({ x,y,z })
 {
 	Geometry g = Geometry::MakeCubeWire();
+	g.ApplyScale(0.5f);
 
 	AddBind(std::make_unique<VertexBuffer>(gfx, g.vertices));
 	AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, g.indices));
@@ -25,6 +26,7 @@ Boundary::Boundary(Graphics& gfx, float x, float y, float z)
 	};
 	AddBind(std::make_unique<InputLayout>(gfx, layout, pByteCode));
 	AddBind(std::make_unique<TransformCBuf>(gfx, *this));
+	AddBind(std::make_unique<PixelConstantBuffer<RGBColor>>(gfx, color));
 }
 
 Boundary::Boundary(Graphics& gfx)
@@ -34,5 +36,15 @@ Boundary::Boundary(Graphics& gfx)
 
 DirectX::XMMATRIX Boundary::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixTranslation(position.posX, position.posY, position.posZ);
+	return DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) * DirectX::XMMatrixTranslation(position.x, position.y, position.z);
+}
+
+void Boundary::SetScale(float sx, float sy, float sz) noexcept
+{
+	scale = { sx, sy, sz };
+}
+
+void Boundary::SetColor(float r, float g, float b) noexcept
+{
+	color = { r,g,b,1.0f };
 }

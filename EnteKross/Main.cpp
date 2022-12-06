@@ -1,6 +1,7 @@
 #include <sstream>
 
 #include "App.h"
+#include "Timer.h"
 
 int CALLBACK WinMain(
 	_In_	 HINSTANCE hInstance,
@@ -12,18 +13,18 @@ int CALLBACK WinMain(
 	try
 	{
 		App app{};
+		Timer timer;
 		app.Setup();
 
+		timer.Mark();
 		while (true)
 		{
-			Sleep(1);
-
 			if (const auto ecode = Window::ProcessMessages())
 			{
 				return *ecode;
 			}
 
-			app.Update(1.0f/60.0f);
+			app.Update(timer.Mark());
 			app.Draw();
 		}
 	}

@@ -216,12 +216,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="SolidVS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>

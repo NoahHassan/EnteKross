@@ -11,6 +11,18 @@ public:
 public:
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void SetScale(float scale) noexcept;
+	void SetColor(Graphics& gfx, float r, float g, float b);
+private:
+	struct RGBColor
+	{
+		float r;
+		float g;
+		float b;
+		float a;
+	};
+private:
+	float scale = 1.0f;
+	RGBColor color = { 1.0f,1.0f,1.0f,1.0f };
 public:
 	struct
 	{
@@ -18,5 +30,4 @@ public:
 		float y = 0.0f;
 		float z = 0.0f;
 	} position;
-	float scale = 1.0f;
 };

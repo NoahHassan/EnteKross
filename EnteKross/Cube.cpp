@@ -33,6 +33,7 @@ Cube::Cube(Graphics& gfx, float x, float y, float z)
 		SetIndexBufferFromStatic();
 	}
 
+	AddBind(std::make_unique<PixelConstantBuffer<RGBColor>>(gfx, color));
 	AddBind(std::make_unique<TransformCBuf>(gfx, *this));
 }
 
@@ -43,5 +44,15 @@ Cube::Cube(Graphics& gfx)
 
 DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixTranslation(position.posX, position.posY, position.posZ);
+	return DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) * DirectX::XMMatrixTranslation(position.posX, position.posY, position.posZ);
+}
+
+void Cube::SetScale(float sx, float sy, float sz) noexcept
+{
+	scale = { sx, sy, sz };
+}
+
+void Cube::SetColor(float r, float g, float b) noexcept
+{
+	color = { r,g,b,1.0f };
 }

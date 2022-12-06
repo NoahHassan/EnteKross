@@ -32,6 +32,7 @@ Sphere::Sphere(Graphics& gfx, float x, float y, float z)
 		SetIndexBufferFromStatic();
 	}
 
+	AddBind(std::make_unique<PixelConstantBuffer<RGBColor>>(gfx, color));
 	AddBind(std::make_unique<TransformCBuf>(gfx, *this));
 }
 
@@ -48,4 +49,10 @@ DirectX::XMMATRIX Sphere::GetTransformXM() const noexcept
 void Sphere::SetScale(float scale) noexcept
 {
 	this->scale = scale;
+}
+
+void Sphere::SetColor(Graphics& gfx, float r, float g, float b)
+{
+	color = { r,g,b,1.0f };
+	QueryBindable<PixelConstantBuffer<RGBColor>>()->Update(gfx, color);
 }
