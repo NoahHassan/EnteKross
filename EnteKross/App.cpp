@@ -29,7 +29,7 @@ void App::Update(float dt)
 		for (auto& match : matches)
 		{
 			match->position.y -= timeStep * matchVelocity * simulationSpeed;
-			if (match->position.y < -boundary->scale.y / 2.0f)
+			if (match->position.y < -boundary->scale.y / 2.0f + layerHeight)
 			{
 				// [matchVolume] mm^2
 				// [boundaryScale] cm
