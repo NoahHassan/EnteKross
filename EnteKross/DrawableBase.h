@@ -10,18 +10,18 @@ public:
 	{
 		return !pStaticBinds.empty();
 	}
-	void AddStaticBind(std::unique_ptr<Bindable> pBind)
+	void AddStaticBind(std::unique_ptr<Bindable> pBind) noexcept(!IS_DEBUG)
 	{
 		assert("IndexBuffer must be bound using the AddStaticIndexBuffer function" && typeid(*pBind) != typeid(IndexBuffer));
 		pStaticBinds.push_back(std::move(pBind));
 	}
-	void AddStaticIndexBuffer(std::unique_ptr<IndexBuffer> pBind)
+	void AddStaticIndexBuffer(std::unique_ptr<IndexBuffer> pBind) noexcept(!IS_DEBUG)
 	{
 		assert("IndexBuffer already set" && pIndexBuffer == nullptr);
 		pIndexBuffer = pBind.get();
 		pStaticBinds.push_back(std::move(pBind));
 	}
-	void SetIndexBufferFromStatic()
+	void SetIndexBufferFromStatic() noexcept(!IS_DEBUG)
 	{
 		assert("IndexBuffer already set" && pIndexBuffer == nullptr);
 		for (const auto& b : pStaticBinds)
@@ -34,7 +34,7 @@ public:
 		}
 		assert("No static IndexBuffer found" && false);
 	}
-	virtual void Draw(Graphics& gfx) override
+	virtual void Draw(Graphics& gfx) const override
 	{
 		assert(pIndexBuffer != nullptr && "No Index Buffer bound");
 
