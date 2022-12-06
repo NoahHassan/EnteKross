@@ -56,13 +56,47 @@ Graphics::Graphics(HWND hWnd)
 		&pContext
 	));
 
+	// Create Depth Buffer
+	D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+	dsDesc.DepthEnable = TRUE;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> pDSState;
+	ENTE_GFX_CHECK_EXCEPTION(pDevice->CreateDepthStencilState(&dsDesc, &pDSState));
+
+	// Bind DSState
+	pContext->OMSetDepthStencilState(pDSState.Get(), 1u);
+
+	D3D11_TEXTURE2D_DESC depthDesc = {};
+	depthDesc.Width = 800;
+	depthDesc.Height = 600;
+	depthDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthDesc.CPUAccessFlags = 0u;
+	depthDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	depthDesc.MipLevels = 1u;
+	depthDesc.ArraySize = 1u;
+	depthDesc.SampleDesc.Count = 1u;
+	depthDesc.SampleDesc.Quality = 0u;
+
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> pDepthTex;
+	ENTE_GFX_CHECK_EXCEPTION(pDevice->CreateTexture2D(&depthDesc, nullptr, &pDepthTex));
+
+	// Create Depth Stencil View
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	dsvDesc.Texture2D.MipSlice = 0u;
+	pDevice->CreateDepthStencilView(pDepthTex.Get(), &dsvDesc, &pDSView);
+
 	// Create Render Target View
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> pBackBuffer;
 	ENTE_GFX_CHECK_EXCEPTION(pSwapChain->GetBuffer(0u, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(pBackBuffer.GetAddressOf())));
 	ENTE_GFX_CHECK_EXCEPTION(pDevice->CreateRenderTargetView(pBackBuffer.Get(), NULL, &pRenderTargetView));
 
 	// Bind Render Target View
-	pContext->OMSetRenderTargets(1u, pRenderTargetView.GetAddressOf(), nullptr);
+	pContext->OMSetRenderTargets(1u, pRenderTargetView.GetAddressOf(), pDSView.Get());
 
 	// Configure Viewport
 	D3D11_VIEWPORT vp = {};
@@ -93,7 +127,8 @@ void Graphics::BeginFrame(float r, float g, float b) noexcept
 	}
 
 	const float color[4] = { r,g,b,1.0f };
-	pContext->OMSetRenderTargets(1u, pRenderTargetView.GetAddressOf(), nullptr);
+	pContext->OMSetRenderTargets(1u, pRenderTargetView.GetAddressOf(), pDSView.Get());
+	pContext->ClearDepthStencilView(pDSView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 	pContext->ClearRenderTargetView(pRenderTargetView.Get(), color);
 }
 
