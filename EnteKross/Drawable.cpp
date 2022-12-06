@@ -10,7 +10,8 @@ void Drawable::AddBind(std::unique_ptr<Bindable> bind)
 void Drawable::AddIndexBuffer(std::unique_ptr<IndexBuffer> indexBuf)
 {
 	assert(pIndexBuffer == nullptr && "Index Buffer already bound");
-	pIndexBuffer = std::unique_ptr<IndexBuffer>(std::move(indexBuf));
+	pIndexBuffer = indexBuf.get();
+	AddBind(std::move(indexBuf));
 }
 
 void Drawable::Draw(Graphics& gfx)

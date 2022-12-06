@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Graphics.h"
-#include "Drawable.h"
+#include "DrawableBase.h"
 
-class Cube : public Drawable
+class Cube : public DrawableBase<Cube>
 {
 public:
 	Cube(Graphics& gfx, float x, float y, float z);

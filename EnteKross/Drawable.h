@@ -15,9 +15,9 @@ public:
 	void AddBind(std::unique_ptr<Bindable> bind);
 	void AddIndexBuffer(std::unique_ptr<IndexBuffer> indexBuf);
 public:
-	void Draw(Graphics& gfx);
+	virtual void Draw(Graphics& gfx);
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
-private:
+protected:
 	std::vector<std::unique_ptr<Bindable>> pBinds;
-	std::unique_ptr<IndexBuffer> pIndexBuffer;
+	const IndexBuffer* pIndexBuffer = nullptr;
 };
