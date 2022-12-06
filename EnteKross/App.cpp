@@ -13,22 +13,11 @@ App::App()
 
 void App::Setup()
 {
-	pBoundary = std::make_unique<Boundary>(gfx, 0.0f, 0.0f, 0.0f);
-	cubes.emplace_back(std::make_unique<Cube>(gfx, 0.0f, 0.0f, -4.0f));
-	cubes.emplace_back(std::make_unique<Cube>(gfx, 0.0f, 2.0f, 1.0f));
-	cubes.emplace_back(std::make_unique<Cube>(gfx, 1.0f, -3.0f, -6.0f));
-
 	cam.UpdatePosition(gfx, { 0.0f,0.0f,5.0f });
 }
 
 void App::Update(float dt)
 {
-	t += dt;
-	for (auto& p : cubes)
-	{
-		p->position.posZ -= dt;
-	}
-
 	// Keyboard Control
 	if (wnd.keyboard.KeyIsPressed('D'))
 	{
@@ -54,21 +43,12 @@ void App::Update(float dt)
 
 void App::Draw()
 {
-	gfx.BeginFrame(c, c, 1.0f);
+	gfx.BeginFrame(0.15f, 0.15f, 0.25f);
 
 	// DRAW CODE HERE //
 
-	if (ImGui::Begin("Chicken Tikka"))
-	{
-		ImGui::SliderFloat("Background", &c, 0.0f, 1.0f, "%.2f");
-	}
-	ImGui::End();
-
-	for (auto& p : cubes)
-	{
-		p->Draw(gfx);
-	}
-	pBoundary->Draw(gfx);
+	// IMGUI //
+	// IMGUI //
 
 	// DRAW CODE HERE //
 

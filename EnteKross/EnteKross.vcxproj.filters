@@ -87,6 +87,9 @@
     <ClCompile Include="Boundary.cpp">
       <Filter>Drawables\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Drawables\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -192,6 +195,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="DrawableBase.h">
+      <Filter>Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
       <Filter>Drawables</Filter>
     </ClInclude>
   </ItemGroup>

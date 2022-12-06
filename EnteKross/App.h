@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "Cube.h"
+#include "Sphere.h"
 #include "Boundary.h"
 #include "ImGuiManager.h"
 #include "Camera.h"
@@ -32,10 +33,5 @@ private:
 	float r	= 5.0f;
 	float theta_max = PI - 0.01f;
 	float theta_min = 0.01f;
-
-	float c = 0.0f;
-	float t = 0.0f;
-	std::unique_ptr<Boundary> pBoundary;
-	std::vector<std::unique_ptr<Cube>> cubes;
 	// USER VARIABLES //
 };
