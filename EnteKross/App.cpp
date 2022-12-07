@@ -19,33 +19,43 @@ void App::Setup()
 
 	boundary = std::make_unique<Boundary>(gfx, 0.0f, 0.0f, 0.0f);
 	boundary->SetScale(5.0f, 3.0f, 5.0f);
-	InitializeSimulation();
+	InitializeSimulation(nMatches);
 }
 
 void App::Update(float dt)
 {
-	// DO SIMULATION //
-	if (running) {
-		for (auto& match : matches)
+	if (runBatch)
+	{
+		if (!Step())
 		{
-			match->position.y -= timeStep * matchVelocity * simulationSpeed;
-			if (match->position.y < -boundary->scale.y / 2.0f + layerHeight)
+			if (nMin == nMax - 1)
 			{
-				// [matchVolume] mm^2
-				// [boundaryScale] cm
-				// --> layerHeight multiplied by mm^2 to cm^2 conversion of 0.01f
+				int i = 0;
+			}
+			if (nCur++ > nRep)
+			{
+				nCur = 2;
+				if (++nMin > nMax) {
+					runBatch = false;
 
-				layerHeight += filling * matchVolume * 0.01f / boundary->scale.z; // * boundary->scale.x
-				ground->SetScale(boundary->scale.x, layerHeight, boundary->scale.z);
-				ground->position.posY = (-boundary->scale.y + layerHeight) / 2.0f;
-				matches.pop_back();
+					if (logToFile)
+						logger.LogToFile(fileName);
+				}
+				else {
+					if (logToFile)
+						logger.NewLine();
+
+					InitializeSimulation(nMin);
+				}
+			}
+			else
+			{
+				InitializeSimulation(nMin);
 			}
 		}
-
-		if (matches.empty())
-			running = false;
 	}
-	// DO SIMULATION //
+	else if (running)
+		running = Step();
 
 	// Keyboard Control
 	if (wnd.keyboard.KeyIsPressed('D'))
@@ -87,11 +97,30 @@ void App::Draw()
 
 		if (ImGui::Button("Init"))
 		{
-			InitializeSimulation();
+			InitializeSimulation(nMatches);
 		}
 		if (ImGui::Button("Run"))
 		{
 			running = true;
+		}
+
+		if (ImGui::BeginMenu("Batch"))
+		{
+			ImGui::SliderInt("n min", &nMin, 1, 100);
+			ImGui::SliderInt("n max", &nMax, 1, 100);
+			ImGui::SliderInt("n rep", &nRep, 1, 100);
+			ImGui::Checkbox("log", &logToFile);
+
+			if (logToFile)
+				ImGui::InputText("filename", fileName, sizeof(fileName));
+
+			if (ImGui::Button("run batch"))
+			{
+				InitializeSimulation(nMin);
+				logger.Reset();
+				runBatch = true;
+			}
+			ImGui::EndMenu();
 		}
 	}
 	ImGui::End();
@@ -109,7 +138,7 @@ void App::Draw()
 	gfx.EndFrame();
 }
 
-void App::InitializeSimulation()
+void App::InitializeSimulation(int n)
 {
 	layerHeight = 0.0f;
 	ground = std::make_unique<Cube>(gfx, 0.0f, (-boundary->scale.y + layerHeight) / 2.0f, 0.0f);
@@ -123,7 +152,7 @@ void App::InitializeSimulation()
 
 	matches = std::vector<std::unique_ptr<Sphere>>(0);
 	matchVolume = 4.0f * PI * matchRadius * matchRadius;
-	while (std::size(matches) < nMatches)
+	while (std::size(matches) < n)
 	{
 		float x = dstX(rng);
 		float y = dstY(rng);
@@ -139,4 +168,38 @@ void App::InitializeSimulation()
 			return a->position.y > b->position.y;
 		}
 	);
+
+	if (logToFile)
+	{
+		float maxDst = matches[0]->position.y - matches[n-1]->position.y;
+		float layer = (n - 1) * filling * matchVolume * 0.01f / boundary->scale.z;
+		float maxT = (maxDst - layer) / (matchVelocity * 100.0f);
+		logger.WriteValue(maxT);
+	}
+}
+
+bool App::Step()
+{
+	for (auto& match : matches)
+	{
+		match->position.y -= timeStep * matchVelocity * simulationSpeed;
+		if (match->position.y < -boundary->scale.y / 2.0f + layerHeight)
+		{
+			// [matchVolume] mm^2
+			// [boundaryScale] cm
+			// --> layerHeight multiplied by mm^2 to cm^2 conversion of 0.01f
+
+			layerHeight += filling * matchVolume * 0.01f / boundary->scale.z; // * boundary->scale.x
+			ground->SetScale(boundary->scale.x, layerHeight, boundary->scale.z);
+			ground->position.posY = (-boundary->scale.y + layerHeight) / 2.0f;
+			matches.pop_back();
+		}
+	}
+
+	if (matches.empty())
+	{
+		return false;
+	}
+
+	return true;
 }
